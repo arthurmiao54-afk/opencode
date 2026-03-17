@@ -9,11 +9,11 @@ import { getDirectory, getFilename } from "@opencode-ai/util/path"
 const LOGO_URL = "https://s3/agi/opencode/logo.svg"
 
 function RemoteLogo(props: { class?: string }) {
-  const [error, setError] = createSignal(false)
+  const [loaded, setLoaded] = createSignal<boolean | null>(null)
 
   return (
     <Show
-      when={!error()}
+      when={loaded() !== false}
       fallback={
         <span
           style={{
@@ -33,7 +33,8 @@ function RemoteLogo(props: { class?: string }) {
         src={LOGO_URL}
         alt="CimiCode"
         class={props.class}
-        onError={() => setError(true)}
+        onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(false)}
       />
     </Show>
   )

@@ -7,7 +7,7 @@ const channel = (() => {
 })()
 
 const getBase = (): Configuration => ({
-  artifactName: "opencode-electron-${os}-${arch}.${ext}",
+  artifactName: "cimicode.exe",
   directories: {
     output: "dist",
     buildResources: "resources",
@@ -72,9 +72,9 @@ function getConfig() {
     case "dev": {
       return {
         ...base,
-        appId: "ai.opencode.desktop.dev",
-        productName: "OpenCode Dev",
-        rpm: { packageName: "opencode-dev" },
+        appId: "ai.cimicode.desktop",
+        productName: "CimiCode",
+        rpm: { packageName: "cimicode" },
       }
     }
     case "beta": {

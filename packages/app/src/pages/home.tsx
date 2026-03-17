@@ -1,6 +1,5 @@
-import { createMemo, For, Match, Switch } from "solid-js"
+import { createMemo, For, Match, Switch, createSignal, Show } from "solid-js"
 import { Button } from "@opencode-ai/ui/button"
-import { Logo } from "@opencode-ai/ui/logo"
 import { useLayout } from "@/context/layout"
 import { useNavigate } from "@solidjs/router"
 import { base64Encode } from "@opencode-ai/util/encode"
@@ -13,6 +12,40 @@ import { DialogSelectServer } from "@/components/dialog-select-server"
 import { useServer } from "@/context/server"
 import { useGlobalSync } from "@/context/global-sync"
 import { useLanguage } from "@/context/language"
+
+const LOGO_URL = "https://s3/agi/opencode/logo.svg"
+
+function RemoteLogo(props: { class?: string }) {
+  const [loaded, setLoaded] = createSignal<boolean | null>(null)
+
+  return (
+    <Show
+      when={loaded() !== false}
+      fallback={
+        <span
+          style={{
+            color: "#3b82f6",
+            "font-size": "24px",
+            "font-weight": "600",
+            display: "flex",
+            "align-items": "center",
+            "justify-content": "center",
+          }}
+        >
+          CimiCode
+        </span>
+      }
+    >
+      <img
+        src={LOGO_URL}
+        alt="CimiCode"
+        class={props.class}
+        onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(false)}
+      />
+    </Show>
+  )
+}
 
 export default function Home() {
   const sync = useGlobalSync()
@@ -70,7 +103,7 @@ export default function Home() {
 
   return (
     <div class="mx-auto mt-55 w-full md:w-auto px-4">
-      <Logo class="md:w-xl opacity-12" />
+      <RemoteLogo class="md:w-xl opacity-12" />
       <Button
         size="large"
         variant="ghost"
