@@ -53,7 +53,11 @@ const getBase = (): Configuration => ({
     installerHeaderIcon: `resources/icons/icon.ico`,
     installerSidebar: `assets/nsis-sidebar.bmp`,
     installerHeader: `assets/nsis-header.bmp`,
+    deleteAppDataOnUninstall: true,
+    runAfterFinish: true,
   },
+  compression: "maximum",
+  compression: "normal",
   linux: {
     icon: `resources/icons`,
     category: "Development",
