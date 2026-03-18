@@ -57,7 +57,6 @@ const getBase = (): Configuration => ({
     runAfterFinish: true,
   },
   compression: "maximum",
-  compression: "normal",
   linux: {
     icon: `resources/icons`,
     category: "Development",

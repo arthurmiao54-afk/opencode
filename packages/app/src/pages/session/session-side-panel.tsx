@@ -74,7 +74,12 @@ export function SessionSidePanel(props: {
   const empty = (msg: string) => (
     <div class="h-full flex flex-col">
       <div class="h-6 shrink-0" aria-hidden />
-      <div class="flex-1 pb-64 flex items-center justify-center text-center">
+      <div class="flex-1 pb-64 flex flex-col items-center justify-center text-center gap-4">
+        <img
+          src="https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-none.svg"
+          alt="CimiCode"
+          class="w-16 h-16 opacity-30"
+        />
         <div class="text-12-regular text-text-weak">{msg}</div>
       </div>
     </div>

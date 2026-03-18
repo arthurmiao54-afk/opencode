@@ -944,6 +944,11 @@ export default function Page() {
 
   const emptyTurn = () => (
     <div class="h-full pb-64 -mt-4 flex flex-col items-center justify-center text-center gap-6">
+      <img
+        src="https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-none.svg"
+        alt="CimiCode"
+        class="w-16 h-16 opacity-30"
+      />
       <div class="text-14-regular text-text-weak max-w-56">{language.t("session.review.noChanges")}</div>
     </div>
   )
@@ -975,6 +980,11 @@ export default function Page() {
 
     return (
       <div class={input.emptyClass}>
+        <img
+          src="https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-none.svg"
+          alt="CimiCode"
+          class="w-16 h-16 opacity-30"
+        />
         <div class="text-14-regular text-text-weak max-w-56">{language.t(reviewEmptyKey())}</div>
       </div>
     )

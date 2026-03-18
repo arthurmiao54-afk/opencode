@@ -1,3 +1,9 @@
+[data-slot="context-menu-trigger"] {
+  border: inherit;
+  background: inherit;
+  box-sizing: border-box;
+}
+
 [data-component="context-menu-content"],
 [data-component="context-menu-sub-content"] {
   min-width: 8rem;
