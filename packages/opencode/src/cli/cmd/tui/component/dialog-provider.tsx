@@ -13,6 +13,7 @@ import { DialogModel } from "./dialog-model"
 import { useKeyboard } from "@opentui/solid"
 import { Clipboard } from "@tui/util/clipboard"
 import { useToast } from "../ui/toast"
+import { Brand } from "@/brand"
 
 const PROVIDER_PRIORITY: Record<string, number> = {
   opencode: 0,
@@ -32,7 +33,11 @@ export function createDialogProviderOptions() {
       sync.data.provider_next.all,
       sortBy((x) => PROVIDER_PRIORITY[x.id] ?? 99),
       map((provider) => ({
-        title: provider.name,
+        title:
+          {
+            opencode: Brand.provider("opencode"),
+            "opencode-go": Brand.provider("opencode-go"),
+          }[provider.id] ?? provider.name,
         value: provider.id,
         description: {
           opencode: "(Recommended)",
@@ -220,8 +225,8 @@ function ApiMethod(props: ApiMethodProps) {
           opencode: (
             <box gap={1}>
               <text fg={theme.textMuted}>
-                OpenCode Zen gives you access to all the best coding models at the cheapest prices with a single API
-                key.
+                {Brand.provider("opencode")} gives you access to all the best coding models at the cheapest prices
+                with a single API key.
               </text>
               <text fg={theme.text}>
                 Go to <span style={{ fg: theme.primary }}>https://opencode.ai/zen</span> to get a key
@@ -231,11 +236,12 @@ function ApiMethod(props: ApiMethodProps) {
           "opencode-go": (
             <box gap={1}>
               <text fg={theme.textMuted}>
-                OpenCode Go is a $10 per month subscription that provides reliable access to popular open coding models
-                with generous usage limits.
+                {Brand.provider("opencode-go")} is a $10 per month subscription that provides reliable access to
+                popular open coding models with generous usage limits.
               </text>
               <text fg={theme.text}>
-                Go to <span style={{ fg: theme.primary }}>https://opencode.ai/zen</span> and enable OpenCode Go
+                Go to <span style={{ fg: theme.primary }}>https://opencode.ai/zen</span> and enable{" "}
+                {Brand.provider("opencode-go")}
               </text>
             </box>
           ),

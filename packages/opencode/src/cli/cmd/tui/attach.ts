@@ -5,10 +5,11 @@ import { win32DisableProcessedInput, win32InstallCtrlCGuard } from "./win32"
 import { TuiConfig } from "@/config/tui"
 import { Instance } from "@/project/instance"
 import { existsSync } from "fs"
+import { Brand } from "@/brand"
 
 export const AttachCommand = cmd({
   command: "attach <url>",
-  describe: "attach to a running opencode server",
+  describe: `attach to a running ${Brand.id} server`,
   builder: (yargs) =>
     yargs
       .positional("url", {
@@ -63,7 +64,7 @@ export const AttachCommand = cmd({
       const headers = (() => {
         const password = args.password ?? process.env.OPENCODE_SERVER_PASSWORD
         if (!password) return undefined
-        const auth = `Basic ${Buffer.from(`opencode:${password}`).toString("base64")}`
+        const auth = `Basic ${Buffer.from(`${Brand.id}:${password}`).toString("base64")}`
         return { Authorization: auth }
       })()
       const config = await Instance.provide({

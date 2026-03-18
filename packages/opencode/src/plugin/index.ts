@@ -12,6 +12,7 @@ import { Session } from "../session"
 import { NamedError } from "@opencode-ai/util/error"
 import { CopilotAuthPlugin } from "./copilot"
 import { gitlabAuthPlugin as GitlabAuthPlugin } from "@gitlab/opencode-gitlab-auth"
+import { Brand } from "@/brand"
 
 export namespace Plugin {
   const log = Log.create({ service: "plugin" })
@@ -27,7 +28,7 @@ export namespace Plugin {
       directory: Instance.directory,
       headers: Flag.OPENCODE_SERVER_PASSWORD
         ? {
-            Authorization: `Basic ${Buffer.from(`${Flag.OPENCODE_SERVER_USERNAME ?? "opencode"}:${Flag.OPENCODE_SERVER_PASSWORD}`).toString("base64")}`,
+            Authorization: `Basic ${Buffer.from(`${Flag.OPENCODE_SERVER_USERNAME ?? Brand.id}:${Flag.OPENCODE_SERVER_PASSWORD}`).toString("base64")}`,
           }
         : undefined,
       fetch: async (...args) => Server.Default().fetch(...args),

@@ -13,20 +13,28 @@ import type { Provider } from "@/provider/provider"
 import type { Agent } from "@/agent/agent"
 import { PermissionNext } from "@/permission/next"
 import { Skill } from "@/skill"
+import { Brand } from "@/brand"
 
 export namespace SystemPrompt {
+  function format(input: string) {
+    return input
+      .replaceAll("{{BRAND_ID}}", Brand.id)
+      .replaceAll("{{BRAND_NAME}}", Brand.name)
+      .replaceAll("{{BRAND_DISPLAY}}", Brand.spaced)
+  }
+
   export function instructions() {
-    return PROMPT_CODEX.trim()
+    return format(PROMPT_CODEX.trim())
   }
 
   export function provider(model: Provider.Model) {
-    if (model.api.id.includes("gpt-5")) return [PROMPT_CODEX]
+    if (model.api.id.includes("gpt-5")) return [format(PROMPT_CODEX)]
     if (model.api.id.includes("gpt-") || model.api.id.includes("o1") || model.api.id.includes("o3"))
-      return [PROMPT_BEAST]
-    if (model.api.id.includes("gemini-")) return [PROMPT_GEMINI]
-    if (model.api.id.includes("claude")) return [PROMPT_ANTHROPIC]
-    if (model.api.id.toLowerCase().includes("trinity")) return [PROMPT_TRINITY]
-    return [PROMPT_ANTHROPIC_WITHOUT_TODO]
+      return [format(PROMPT_BEAST)]
+    if (model.api.id.includes("gemini-")) return [format(PROMPT_GEMINI)]
+    if (model.api.id.includes("claude")) return [format(PROMPT_ANTHROPIC)]
+    if (model.api.id.toLowerCase().includes("trinity")) return [format(PROMPT_TRINITY)]
+    return [format(PROMPT_ANTHROPIC_WITHOUT_TODO)]
   }
 
   export async function environment(model: Provider.Model) {

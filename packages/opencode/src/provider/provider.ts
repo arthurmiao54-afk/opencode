@@ -46,6 +46,7 @@ import { GoogleAuth } from "google-auth-library"
 import { ProviderTransform } from "./transform"
 import { Installation } from "../installation"
 import { ModelID, ProviderID } from "./schema"
+import { Brand } from "@/brand"
 
 const DEFAULT_CHUNK_TIMEOUT = 300_000
 
@@ -596,7 +597,7 @@ export namespace Provider {
       if (!apiToken) {
         throw new Error(
           "CLOUDFLARE_API_TOKEN (or CF_AIG_TOKEN) is required for Cloudflare AI Gateway. " +
-            "Set it via environment variable or run `opencode auth cloudflare-ai-gateway`.",
+            `Set it via environment variable or run \`${Brand.cmd("auth cloudflare-ai-gateway")}\`.`,
         )
       }
 
@@ -1025,6 +1026,8 @@ export namespace Provider {
         delete providers[providerID]
         continue
       }
+
+      provider.name = Brand.provider(providerID, provider.name)
 
       const configProvider = config.provider?.[providerID]
 

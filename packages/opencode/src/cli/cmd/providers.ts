@@ -13,6 +13,7 @@ import { Instance } from "../../project/instance"
 import type { Hooks } from "@opencode-ai/plugin"
 import { Process } from "../../util/process"
 import { text } from "node:stream/consumers"
+import { Brand } from "@/brand"
 
 type PluginAuth = NonNullable<Hooks["auth"]>
 
@@ -251,11 +252,11 @@ export const ProvidersLoginCommand = cmd({
   command: "login [url]",
   describe: "log in to a provider",
   builder: (yargs) =>
-    yargs
-      .positional("url", {
-        describe: "opencode auth provider",
-        type: "string",
-      })
+      yargs
+        .positional("url", {
+          describe: `${Brand.id} auth provider`,
+          type: "string",
+        })
       .option("provider", {
         alias: ["p"],
         describe: "provider id or name to log in to (skips provider selection)",
