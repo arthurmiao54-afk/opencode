@@ -940,4 +940,25 @@ export const dict = {
   "workspace.reset.archived.one": "1 session will be archived.",
   "workspace.reset.archived.many": "{{count}} sessions will be archived.",
   "workspace.reset.note": "This will reset the workspace to match the default branch.",
+
+  "webFileTransfer.upload.title": "Upload Files",
+  "webFileTransfer.upload.tooltip": "Upload files to workspace",
+  "webFileTransfer.upload.targetPath": "Target Path",
+  "webFileTransfer.upload.dropzone": "Drop files here or click to browse",
+  "webFileTransfer.upload.selectFiles": "Select Files",
+  "webFileTransfer.upload.clearCompleted": "Clear Completed",
+  "webFileTransfer.upload.uploadAll": "Upload All",
+  "webFileTransfer.upload.success": "File uploaded successfully",
+  "webFileTransfer.upload.error": "Upload failed",
+
+  "webFileTransfer.download.title": "Download Files",
+  "webFileTransfer.download.tooltip": "Download files from workspace",
+  "webFileTransfer.download.searchPlaceholder": "Search files in workspace...",
+  "webFileTransfer.download.empty": "No files found",
+  "webFileTransfer.download.manualPath": "Or enter path manually",
+  "webFileTransfer.download.download": "Download",
+  "webFileTransfer.download.success": "File downloaded successfully",
+  "webFileTransfer.download.error": "Download failed",
+
+  "common.loading": "Loading...",
 }
