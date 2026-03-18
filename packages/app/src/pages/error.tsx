@@ -6,7 +6,7 @@ import { usePlatform } from "@/context/platform"
 import { useLanguage } from "@/context/language"
 import { Icon } from "@opencode-ai/ui/icon"
 
-const LOGO_URL = "https://s3/agi/opencode/logo.svg"
+const LOGO_URL = "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-logo.svg"
 
 function RemoteLogo(props: { class?: string }) {
   const [loaded, setLoaded] = createSignal<boolean | null>(null)
