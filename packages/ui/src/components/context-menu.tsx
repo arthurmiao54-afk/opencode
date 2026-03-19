@@ -27,11 +27,12 @@ function ContextMenuRoot(props: ContextMenuProps) {
 }
 
 function ContextMenuTrigger(props: ParentProps<ContextMenuTriggerProps>) {
-  const [local, rest] = splitProps(props, ["class", "classList", "children"])
+  const [local, rest] = splitProps(props, ["class", "classList", "style", "children"])
   return (
     <Kobalte.Trigger
       {...rest}
       data-slot="context-menu-trigger"
+      style={local.style}
       classList={{
         ...(local.classList ?? {}),
         [local.class ?? ""]: !!local.class,

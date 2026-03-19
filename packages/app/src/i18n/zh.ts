@@ -926,4 +926,25 @@ export const dict = {
   "error.childStore.persistedProjectIconCreateFailed": "创建持久化项目图标失败",
   "error.childStore.storeCreateFailed": "创建存储失败",
   "terminal.connectionLost.abnormalClose": "WebSocket 异常关闭：{{code}}",
+
+  "webFileTransfer.upload.title": "上传文件",
+  "webFileTransfer.upload.tooltip": "上传文件到工作空间",
+  "webFileTransfer.upload.targetPath": "目标路径",
+  "webFileTransfer.upload.dropzone": "拖放文件到此处或点击选择",
+  "webFileTransfer.upload.selectFiles": "选择文件",
+  "webFileTransfer.upload.clearCompleted": "清除已完成",
+  "webFileTransfer.upload.uploadAll": "全部上传",
+  "webFileTransfer.upload.success": "文件上传成功",
+  "webFileTransfer.upload.error": "上传失败",
+
+  "webFileTransfer.download.title": "下载文件",
+  "webFileTransfer.download.tooltip": "从工作空间下载文件",
+  "webFileTransfer.download.searchPlaceholder": "搜索工作空间文件...",
+  "webFileTransfer.download.empty": "未找到文件",
+  "webFileTransfer.download.manualPath": "或手动输入路径",
+  "webFileTransfer.download.download": "下载",
+  "webFileTransfer.download.success": "文件下载成功",
+  "webFileTransfer.download.error": "下载失败",
+
+  "common.loading": "加载中...",
 } satisfies Partial<Record<Keys, string>>

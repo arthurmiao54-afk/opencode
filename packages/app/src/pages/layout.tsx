@@ -90,6 +90,7 @@ import {
 } from "./layout/sidebar-workspace"
 import { ProjectDragOverlay, SortableProject, type ProjectSidebarContext } from "./layout/sidebar-project"
 import { SidebarContent } from "./layout/sidebar-shell"
+import { WebFileTransfer } from "@/components/web-file-transfer"
 
 export default function Layout(props: ParentProps) {
   const [store, setStore, , ready] = persisted(
@@ -2275,7 +2276,8 @@ export default function Layout(props: ParentProps) {
   const projectListRow = () => (
     <div
       data-component="project-list-row"
-      class="hidden xl:flex h-12 shrink-0 bg-background-base border-b border-border-weak-base items-center px-2 gap-1 overflow-x-auto no-scrollbar"
+      class="hidden xl:flex h-12 shrink-0 border-b border-border-weak-base items-center px-2 gap-1 overflow-x-auto no-scrollbar"
+      style={{ background: "white" }}
     >
       <DragDropProvider
         onDragStart={handleDragStart}
@@ -2334,6 +2336,7 @@ export default function Layout(props: ParentProps) {
   return (
     <div class="relative bg-background-base flex-1 min-h-0 min-w-0 flex flex-col select-none [&_input]:select-text [&_textarea]:select-text [&_[contenteditable]]:select-text">
       <Titlebar />
+      <WebFileTransfer />
       {projectListRow()}
       <div class="flex-1 min-h-0 min-w-0 flex">
         <div class="flex-1 min-h-0 relative">

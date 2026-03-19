@@ -13,7 +13,7 @@ import { useServer } from "@/context/server"
 import { useGlobalSync } from "@/context/global-sync"
 import { useLanguage } from "@/context/language"
 
-const LOGO_URL = "https://s3/agi/opencode/logo.svg"
+const LOGO_URL = "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-logo.svg"
 
 function RemoteLogo(props: { class?: string }) {
   const [loaded, setLoaded] = createSignal<boolean | null>(null)
@@ -103,7 +103,7 @@ export default function Home() {
 
   return (
     <div class="mx-auto mt-55 w-full md:w-auto px-4">
-      <RemoteLogo class="md:w-xl opacity-12" />
+      <RemoteLogo class="md:w-2xl opacity-12" />
       <Button
         size="large"
         variant="ghost"

@@ -21,7 +21,7 @@ import { hasProjectPermissions } from "./helpers"
 
 const OPENCODE_PROJECT_ID = "4b0ea68d7af9a6031a7ffda7ad66e0cb83315750"
 
-export const ProjectIcon = (props: { project: LocalProject; class?: string; notify?: boolean }): JSX.Element => {
+export const ProjectIcon = (props: { project: LocalProject; class?: string; notify?: boolean; transparent?: boolean }): JSX.Element => {
   const globalSync = useGlobalSync()
   const notification = useNotification()
   const permission = usePermission()
@@ -38,6 +38,10 @@ export const ProjectIcon = (props: { project: LocalProject; class?: string; noti
   )
   const notify = createMemo(() => props.notify && (hasPermissions() || unseenCount() > 0))
   const name = createMemo(() => props.project.name || getFilename(props.project.worktree))
+  const avatarColors = createMemo(() => {
+    if (props.transparent) return { background: "transparent", foreground: "var(--text-base)" }
+    return getAvatarColors(props.project.icon?.color)
+  })
   return (
     <div class={`relative size-8 shrink-0 rounded ${props.class ?? ""}`}>
       <div class="size-full rounded overflow-clip">
@@ -46,7 +50,7 @@ export const ProjectIcon = (props: { project: LocalProject; class?: string; noti
           src={
             props.project.id === OPENCODE_PROJECT_ID ? "https://opencode.ai/favicon.svg" : props.project.icon?.override
           }
-          {...getAvatarColors(props.project.icon?.color)}
+          {...avatarColors()}
           class="size-full rounded"
           classList={{ "badge-mask": notify() }}
         />

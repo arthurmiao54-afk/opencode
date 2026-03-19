@@ -45,7 +45,7 @@ import Layout from "@/pages/layout"
 import { ErrorPage } from "./pages/error"
 import { useCheckServerHealth } from "./utils/server-health"
 
-const LOGO_URL = "https://s3/agi/opencode/logo.svg"
+const LOGO_URL = "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-logo.svg"
 
 function RemoteLogo(props: { class?: string }) {
   const [loaded, setLoaded] = createSignal<boolean | null>(null)
