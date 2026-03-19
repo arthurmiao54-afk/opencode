@@ -11,6 +11,7 @@ import { createOpencodeClient, type Event } from "@opencode-ai/sdk/v2"
 import type { BunWebSocketData } from "hono/bun"
 import { Flag } from "@/flag/flag"
 import { setTimeout as sleep } from "node:timers/promises"
+import { Brand } from "@/brand"
 
 await Log.init({
   print: process.argv.includes("--print-logs"),
@@ -152,6 +153,6 @@ Rpc.listen(rpc)
 function getAuthorizationHeader(): string | undefined {
   const password = Flag.OPENCODE_SERVER_PASSWORD
   if (!password) return undefined
-  const username = Flag.OPENCODE_SERVER_USERNAME ?? "opencode"
+  const username = Flag.OPENCODE_SERVER_USERNAME ?? Brand.id
   return `Basic ${btoa(`${username}:${password}`)}`
 }

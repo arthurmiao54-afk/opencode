@@ -1,5 +1,6 @@
 import { Log } from "@/util/log"
 import { Bonjour } from "bonjour-service"
+import { Brand } from "@/brand"
 
 const log = Log.create({ service: "mdns" })
 
@@ -12,8 +13,8 @@ export namespace MDNS {
     if (bonjour) unpublish()
 
     try {
-      const host = domain ?? "opencode.local"
-      const name = `opencode-${port}`
+      const host = domain ?? `${Brand.id}.local`
+      const name = `${Brand.id}-${port}`
       bonjour = new Bonjour()
       const service = bonjour.publish({
         name,

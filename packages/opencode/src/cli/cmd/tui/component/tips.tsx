@@ -1,5 +1,6 @@
-import { createMemo, createSignal, For } from "solid-js"
+import { For } from "solid-js"
 import { DEFAULT_THEMES, useTheme } from "@tui/context/theme"
+import { Brand } from "@/brand"
 
 const themeCount = Object.keys(DEFAULT_THEMES).length
 const themeTip = `Use {highlight}/themes{/highlight} or {highlight}Ctrl+X T{/highlight} to switch between ${themeCount} built-in themes`
@@ -30,6 +31,8 @@ function parse(tip: string): TipPart[] {
   return parts
 }
 
+const cmd = (input: string) => Brand.cmd(input)
+
 export function Tips() {
   const theme = useTheme().theme
   const parts = parse(TIPS[Math.floor(Math.random() * TIPS.length)])
@@ -37,7 +40,7 @@ export function Tips() {
   return (
     <box flexDirection="row" maxWidth="100%">
       <text flexShrink={0} style={{ fg: theme.warning }}>
-        ● Tip{" "}
+        * Tip{" "}
       </text>
       <text flexShrink={1}>
         <For each={parts}>
@@ -54,7 +57,7 @@ const TIPS = [
   "Press {highlight}Tab{/highlight} to cycle between Build and Plan agents",
   "Use {highlight}/undo{/highlight} to revert the last message and file changes",
   "Use {highlight}/redo{/highlight} to restore previously undone messages and file changes",
-  "Run {highlight}/share{/highlight} to create a public link to your conversation at opencode.ai",
+  "Run {highlight}/share{/highlight} to create a public link to your conversation",
   "Drag and drop images into the terminal to add them as context",
   "Press {highlight}Ctrl+V{/highlight} to paste images from your clipboard into the prompt",
   "Press {highlight}Ctrl+X E{/highlight} or {highlight}/editor{/highlight} to compose messages in your external editor",
@@ -80,46 +83,35 @@ const TIPS = [
   "Switch to {highlight}Plan{/highlight} agent to get suggestions without making actual changes",
   "Use {highlight}@agent-name{/highlight} in prompts to invoke specialized subagents",
   "Press {highlight}Ctrl+X Right/Left{/highlight} to cycle through parent and child sessions",
-  "Create {highlight}opencode.json{/highlight} for server settings and {highlight}tui.json{/highlight} for TUI settings",
-  "Place TUI settings in {highlight}~/.config/opencode/tui.json{/highlight} for global config",
   "Add {highlight}$schema{/highlight} to your config for autocomplete in your editor",
   "Configure {highlight}model{/highlight} in config to set your default model",
   "Override any keybind in {highlight}tui.json{/highlight} via the {highlight}keybinds{/highlight} section",
   "Set any keybind to {highlight}none{/highlight} to disable it completely",
   "Configure local or remote MCP servers in the {highlight}mcp{/highlight} config section",
-  "OpenCode auto-handles OAuth for remote MCP servers requiring auth",
-  "Add {highlight}.md{/highlight} files to {highlight}.opencode/command/{/highlight} to define reusable custom prompts",
+  `${Brand.name} auto-handles OAuth for remote MCP servers requiring auth`,
   "Use {highlight}$ARGUMENTS{/highlight}, {highlight}$1{/highlight}, {highlight}$2{/highlight} in custom commands for dynamic input",
   "Use backticks in commands to inject shell output (e.g., {highlight}`git status`{/highlight})",
-  "Add {highlight}.md{/highlight} files to {highlight}.opencode/agent/{/highlight} for specialized AI personas",
   "Configure per-agent permissions for {highlight}edit{/highlight}, {highlight}bash{/highlight}, and {highlight}webfetch{/highlight} tools",
   'Use patterns like {highlight}"git *": "allow"{/highlight} for granular bash permissions',
   'Set {highlight}"rm -rf *": "deny"{/highlight} to block destructive commands',
   'Configure {highlight}"git push": "ask"{/highlight} to require approval before pushing',
-  "OpenCode auto-formats files using prettier, gofmt, ruff, and more",
+  `${Brand.name} auto-formats files using prettier, gofmt, ruff, and more`,
   'Set {highlight}"formatter": false{/highlight} in config to disable all auto-formatting',
   "Define custom formatter commands with file extensions in config",
-  "OpenCode uses LSP servers for intelligent code analysis",
-  "Create {highlight}.ts{/highlight} files in {highlight}.opencode/tools/{/highlight} to define new LLM tools",
+  `${Brand.name} uses LSP servers for intelligent code analysis`,
   "Tool definitions can invoke scripts written in Python, Go, etc",
-  "Add {highlight}.ts{/highlight} files to {highlight}.opencode/plugin/{/highlight} for event hooks",
   "Use plugins to send OS notifications when sessions complete",
-  "Create a plugin to prevent OpenCode from reading sensitive files",
-  "Use {highlight}opencode run{/highlight} for non-interactive scripting",
-  "Use {highlight}opencode --continue{/highlight} to resume the last session",
-  "Use {highlight}opencode run -f file.ts{/highlight} to attach files via CLI",
+  `Create a plugin to prevent ${Brand.name} from reading sensitive files`,
+  `Use {highlight}${cmd("run")}{/highlight} for non-interactive scripting`,
+  `Use {highlight}${cmd("--continue")}{/highlight} to resume the last session`,
+  `Use {highlight}${cmd("run -f file.ts")}{/highlight} to attach files via CLI`,
   "Use {highlight}--format json{/highlight} for machine-readable output in scripts",
-  "Run {highlight}opencode serve{/highlight} for headless API access to OpenCode",
-  "Use {highlight}opencode run --attach{/highlight} to connect to a running server",
-  "Run {highlight}opencode upgrade{/highlight} to update to the latest version",
-  "Run {highlight}opencode auth list{/highlight} to see all configured providers",
-  "Run {highlight}opencode agent create{/highlight} for guided agent creation",
-  "Use {highlight}/opencode{/highlight} in GitHub issues/PRs to trigger AI actions",
-  "Run {highlight}opencode github install{/highlight} to set up the GitHub workflow",
-  "Comment {highlight}/opencode fix this{/highlight} on issues to auto-create PRs",
-  "Comment {highlight}/oc{/highlight} on PR code lines for targeted code reviews",
+  `Run {highlight}${cmd("serve")}{/highlight} for headless API access to ${Brand.name}`,
+  `Use {highlight}${cmd("run --attach")}{/highlight} to connect to a running server`,
+  `Run {highlight}${cmd("upgrade")}{/highlight} to update to the latest version`,
+  `Run {highlight}${cmd("auth list")}{/highlight} to see all configured providers`,
+  `Run {highlight}${cmd("agent create")}{/highlight} for guided agent creation`,
   'Use {highlight}"theme": "system"{/highlight} to match your terminal\'s colors',
-  "Create JSON theme files in {highlight}.opencode/themes/{/highlight} directory",
   "Themes support dark/light variants for both modes",
   "Reference ANSI colors 0-255 in custom themes",
   "Use {highlight}{env:VAR_NAME}{/highlight} syntax to reference environment variables in config",
@@ -135,15 +127,14 @@ const TIPS = [
   "Run {highlight}/unshare{/highlight} to remove a session from public access",
   "Permission {highlight}doom_loop{/highlight} prevents infinite tool call loops",
   "Permission {highlight}external_directory{/highlight} protects files outside project",
-  "Run {highlight}opencode debug config{/highlight} to troubleshoot configuration",
+  `Run {highlight}${cmd("debug config")}{/highlight} to troubleshoot configuration`,
   "Use {highlight}--print-logs{/highlight} flag to see detailed logs in stderr",
   "Press {highlight}Ctrl+X G{/highlight} or {highlight}/timeline{/highlight} to jump to specific messages",
   "Press {highlight}Ctrl+X H{/highlight} to toggle code block visibility in messages",
   "Press {highlight}Ctrl+X S{/highlight} or {highlight}/status{/highlight} to see system status info",
   "Enable {highlight}scroll_acceleration{/highlight} in {highlight}tui.json{/highlight} for smooth macOS-style scrolling",
   "Toggle username display in chat via command palette ({highlight}Ctrl+P{/highlight})",
-  "Run {highlight}docker run -it --rm ghcr.io/anomalyco/opencode{/highlight} for containerized use",
-  "Use {highlight}/connect{/highlight} with OpenCode Zen for curated, tested models",
+  `Use {highlight}/connect{/highlight} with ${Brand.provider("opencode")} for curated, tested models`,
   "Commit your project's {highlight}AGENTS.md{/highlight} file to Git for team sharing",
   "Use {highlight}/review{/highlight} to review uncommitted changes, branches, or PRs",
   "Run {highlight}/help{/highlight} or {highlight}Ctrl+X H{/highlight} to show the help dialog",

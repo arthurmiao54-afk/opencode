@@ -15,6 +15,7 @@ import { Global } from "../../global"
 import { modify, applyEdits } from "jsonc-parser"
 import { Filesystem } from "../../util/filesystem"
 import { Bus } from "../../bus"
+import { Brand } from "@/brand"
 
 function getAuthStatusIcon(status: MCP.AuthStatus): string {
   switch (status) {
@@ -83,11 +84,11 @@ export const McpListCommand = cmd({
           isMcpConfigured(entry[1]),
         )
 
-        if (servers.length === 0) {
-          prompts.log.warn("No MCP servers configured")
-          prompts.outro("Add servers with: opencode mcp add")
-          return
-        }
+          if (servers.length === 0) {
+            prompts.log.warn("No MCP servers configured")
+            prompts.outro(`Add servers with: ${Brand.cmd("mcp add")}`)
+            return
+          }
 
         for (const [name, serverConfig] of servers) {
           const status = statuses[name]
@@ -479,11 +480,11 @@ export const McpAddCommand = cmd({
         if (prompts.isCancel(type)) throw new UI.CancelledError()
 
         if (type === "local") {
-          const command = await prompts.text({
-            message: "Enter command to run",
-            placeholder: "e.g., opencode x @modelcontextprotocol/server-filesystem",
-            validate: (x) => (x && x.length > 0 ? undefined : "Required"),
-          })
+            const command = await prompts.text({
+              message: "Enter command to run",
+              placeholder: `e.g., ${Brand.id} x @modelcontextprotocol/server-filesystem`,
+              validate: (x) => (x && x.length > 0 ? undefined : "Required"),
+            })
           if (prompts.isCancel(command)) throw new UI.CancelledError()
 
           const mcpConfig: Config.Mcp = {

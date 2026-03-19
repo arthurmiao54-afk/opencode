@@ -11,6 +11,7 @@ import { useKeybind } from "../../context/keybind"
 import { useDirectory } from "../../context/directory"
 import { useKV } from "../../context/kv"
 import { TodoItem } from "../../component/todo-item"
+import { Brand } from "@/brand"
 
 export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
   const sync = useSync()
@@ -114,7 +115,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                   onMouseDown={() => mcpEntries().length > 2 && setExpanded("mcp", !expanded.mcp)}
                 >
                   <Show when={mcpEntries().length > 2}>
-                    <text fg={theme.text}>{expanded.mcp ? "▼" : "▶"}</text>
+                    <text fg={theme.text}>{expanded.mcp ? "v" : ">"}</text>
                   </Show>
                   <text fg={theme.text}>
                     <b>MCP</b>
@@ -145,7 +146,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                             )[item.status],
                           }}
                         >
-                          •
+                          *
                         </text>
                         <text fg={theme.text} wrapMode="word">
                           {key}{" "}
@@ -174,7 +175,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                 onMouseDown={() => sync.data.lsp.length > 2 && setExpanded("lsp", !expanded.lsp)}
               >
                 <Show when={sync.data.lsp.length > 2}>
-                  <text fg={theme.text}>{expanded.lsp ? "▼" : "▶"}</text>
+                  <text fg={theme.text}>{expanded.lsp ? "v" : ">"}</text>
                 </Show>
                 <text fg={theme.text}>
                   <b>LSP</b>
@@ -200,7 +201,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                           }[item.status],
                         }}
                       >
-                        •
+                        *
                       </text>
                       <text fg={theme.textMuted}>
                         {item.id} {item.root}
@@ -218,7 +219,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                   onMouseDown={() => todo().length > 2 && setExpanded("todo", !expanded.todo)}
                 >
                   <Show when={todo().length > 2}>
-                    <text fg={theme.text}>{expanded.todo ? "▼" : "▶"}</text>
+                    <text fg={theme.text}>{expanded.todo ? "v" : ">"}</text>
                   </Show>
                   <text fg={theme.text}>
                     <b>Todo</b>
@@ -237,7 +238,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                   onMouseDown={() => diff().length > 2 && setExpanded("diff", !expanded.diff)}
                 >
                   <Show when={diff().length > 2}>
-                    <text fg={theme.text}>{expanded.diff ? "▼" : "▶"}</text>
+                    <text fg={theme.text}>{expanded.diff ? "v" : ">"}</text>
                   </Show>
                   <text fg={theme.text}>
                     <b>Modified Files</b>
@@ -281,7 +282,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
               gap={1}
             >
               <text flexShrink={0} fg={theme.text}>
-                ⬖
+                i
               </text>
               <box flexGrow={1} gap={1}>
                 <box flexDirection="row" justifyContent="space-between">
@@ -289,10 +290,10 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                     <b>Getting started</b>
                   </text>
                   <text fg={theme.textMuted} onMouseDown={() => kv.set("dismissed_getting_started", true)}>
-                    ✕
+                    x
                   </text>
                 </box>
-                <text fg={theme.textMuted}>OpenCode includes free models so you can start immediately.</text>
+                <text fg={theme.textMuted}>{Brand.name} includes free models so you can start immediately.</text>
                 <text fg={theme.textMuted}>
                   Connect from 75+ providers to use other models, including Claude, GPT, Gemini etc
                 </text>
@@ -308,9 +309,9 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
             <span style={{ fg: theme.text }}>{directory().split("/").at(-1)}</span>
           </text>
           <text fg={theme.textMuted}>
-            <span style={{ fg: theme.success }}>•</span> <b>Open</b>
+            <span style={{ fg: theme.success }}>*</span>{" "}
             <span style={{ fg: theme.text }}>
-              <b>Code</b>
+              <b>{Brand.name}</b>
             </span>{" "}
             <span>{Installation.VERSION}</span>
           </text>

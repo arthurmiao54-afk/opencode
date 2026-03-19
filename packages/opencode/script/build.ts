@@ -60,6 +60,20 @@ const singleFlag = process.argv.includes("--single")
 const baselineFlag = process.argv.includes("--baseline")
 const skipInstall = process.argv.includes("--skip-install")
 
+function brand() {
+  const exact = process.argv.find((arg) => arg.startsWith("--brand="))
+  if (exact) return exact.split("=", 2)[1] || pkg.name
+
+  const index = process.argv.indexOf("--brand")
+  if (index === -1) return pkg.name
+
+  const value = process.argv[index + 1]
+  if (!value || value.startsWith("--")) throw new Error("missing value for --brand")
+  return value
+}
+
+const brandName = brand()
+
 const allTargets: {
   os: string
   arch: "arm64" | "x64"
@@ -153,8 +167,17 @@ if (!skipInstall) {
 }
 for (const item of targets) {
   const name = [
-    pkg.name,
+    brandName,
     // changing to win32 flags npm for some reason
+    item.os === "win32" ? "windows" : item.os,
+    item.arch,
+    item.avx2 === false ? "baseline" : undefined,
+    item.abi === undefined ? undefined : item.abi,
+  ]
+    .filter(Boolean)
+    .join("-")
+  const target = [
+    "bun",
     item.os === "win32" ? "windows" : item.os,
     item.arch,
     item.avx2 === false ? "baseline" : undefined,
@@ -183,13 +206,14 @@ for (const item of targets) {
       autoloadDotenv: false,
       autoloadTsconfig: true,
       autoloadPackageJson: true,
-      target: name.replace(pkg.name, "bun") as any,
-      outfile: `dist/${name}/bin/opencode`,
-      execArgv: [`--user-agent=opencode/${Script.version}`, "--use-system-ca", "--"],
+      target: target as any,
+      outfile: `dist/${name}/bin/${brandName}`,
+      execArgv: [`--user-agent=${brandName}/${Script.version}`, "--use-system-ca", "--"],
       windows: {},
     },
     entrypoints: ["./src/index.ts", parserWorker, workerPath],
     define: {
+      OPENCODE_BRAND: `'${brandName}'`,
       OPENCODE_VERSION: `'${Script.version}'`,
       OPENCODE_MIGRATIONS: JSON.stringify(migrations),
       OTUI_TREE_SITTER_WORKER_PATH: bunfsRoot + workerRelativePath,

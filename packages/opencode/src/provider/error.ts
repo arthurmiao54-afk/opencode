@@ -1,6 +1,7 @@
 import { APICallError } from "ai"
 import { STATUS_CODES } from "http"
 import { iife } from "@/util/iife"
+import { Brand } from "@/brand"
 import type { ProviderID } from "./schema"
 
 export namespace ProviderError {
@@ -68,6 +69,9 @@ export namespace ProviderError {
 
       // If responseBody is HTML (e.g. from a gateway or proxy error page),
       // provide a human-readable message instead of dumping raw markup
+      if (/^\s*<!doctype|^\s*<html/i.test(e.responseBody) && e.statusCode === 401) {
+        return `Unauthorized: request was blocked by a gateway or proxy. Your authentication token may be missing or expired. Try running \`${Brand.cmd("auth login <your provider URL>")}\` to re-authenticate.`
+      }
       if (/^\s*<!doctype|^\s*<html/i.test(e.responseBody)) {
         if (e.statusCode === 401) {
           return "Unauthorized: request was blocked by a gateway or proxy. Your authentication token may be missing or expired — try running `opencode auth login <your provider URL>` to re-authenticate."
