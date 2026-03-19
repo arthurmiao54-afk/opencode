@@ -1,17 +1,20 @@
 // This method is called when your extension is deactivated
 export function deactivate() {}
 
+import * as fs from "fs"
+import * as path from "path"
 import * as vscode from "vscode"
 
-const TERMINAL_NAME = "opencode"
+const TERMINAL_NAME = "cimicode"
+const PORT_NAME = "_EXTENSION_CIMICODE_PORT"
 
 export function activate(context: vscode.ExtensionContext) {
-  let openNewTerminalDisposable = vscode.commands.registerCommand("opencode.openNewTerminal", async () => {
+  let openNewTerminalDisposable = vscode.commands.registerCommand("cimicode.openNewTerminal", async () => {
     await openTerminal()
   })
 
-  let openTerminalDisposable = vscode.commands.registerCommand("opencode.openTerminal", async () => {
-    // An opencode terminal already exists => focus it
+  let openTerminalDisposable = vscode.commands.registerCommand("cimicode.openTerminal", async () => {
+    // A cimicode terminal already exists => focus it
     const existingTerminal = vscode.window.terminals.find((t) => t.name === TERMINAL_NAME)
     if (existingTerminal) {
       existingTerminal.show()
@@ -21,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
     await openTerminal()
   })
 
-  let addFilepathDisposable = vscode.commands.registerCommand("opencode.addFilepathToTerminal", async () => {
+  let addFilepathDisposable = vscode.commands.registerCommand("cimicode.addFilepathToTerminal", async () => {
     const fileRef = getActiveFile()
     if (!fileRef) {
       return
@@ -34,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     if (terminal.name === TERMINAL_NAME) {
       // @ts-ignore
-      const port = terminal.creationOptions.env?.["_EXTENSION_OPENCODE_PORT"]
+      const port = terminal.creationOptions.env?.[PORT_NAME]
       port ? await appendPrompt(parseInt(port), fileRef) : terminal.sendText(fileRef, false)
       terminal.show()
     }
@@ -44,6 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   async function openTerminal() {
     // Create a new terminal in split screen
+    const bin = cmd()
     const port = Math.floor(Math.random() * (65535 - 16384 + 1)) + 16384
     const terminal = vscode.window.createTerminal({
       name: TERMINAL_NAME,
@@ -56,13 +60,16 @@ export function activate(context: vscode.ExtensionContext) {
         preserveFocus: false,
       },
       env: {
-        _EXTENSION_OPENCODE_PORT: port.toString(),
+        [PORT_NAME]: port.toString(),
         OPENCODE_CALLER: "vscode",
+        OPENCODE_BRAND: "cimicode",
       },
+      shellArgs: bin ? ["--port", port.toString()] : undefined,
+      shellPath: bin,
     })
 
     terminal.show()
-    terminal.sendText(`opencode --port ${port}`)
+    if (!bin) terminal.sendText(`cimicode --port ${port}`)
 
     const fileRef = getActiveFile()
     if (!fileRef) {
@@ -133,5 +140,35 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     return filepathWithAt
+  }
+
+  function cmd() {
+    const set = vscode.workspace.getConfiguration("cimicode").get<string>("path")?.trim()
+    if (set) {
+      const root = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath
+      const file = path.isAbsolute(set) || !root ? set : path.join(root, set)
+      if (fs.existsSync(file)) return file
+      void vscode.window.showWarningMessage(`Configured cimicode.path was not found: ${file}`)
+    }
+
+    const exe = process.platform === "win32" ? "cimicode.exe" : "cimicode"
+    const os = process.platform === "win32" ? "windows" : process.platform
+    const dir = `cimicode-${os}-${process.arch}`
+    const list =
+      vscode.workspace.workspaceFolders?.flatMap((item) => roots(item.uri.fsPath).map((root) => path.join(root, "packages", "opencode", "dist", dir, "bin", exe))) ?? []
+
+    return list.find((item, index) => list.indexOf(item) === index && fs.existsSync(item))
+  }
+
+  function roots(input: string) {
+    const list = [input]
+    let dir = input
+    while (list.length < 6) {
+      const next = path.dirname(dir)
+      if (next === dir) return list
+      list.push(next)
+      dir = next
+    }
+    return list
   }
 }
