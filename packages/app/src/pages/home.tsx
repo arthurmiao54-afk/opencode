@@ -103,7 +103,7 @@ export default function Home() {
 
   return (
     <div class="mx-auto mt-55 w-full md:w-auto px-4">
-      <RemoteLogo class="md:w-2xl opacity-12" />
+      <RemoteLogo class="md:w-2xl" />
       <Button
         size="large"
         variant="ghost"

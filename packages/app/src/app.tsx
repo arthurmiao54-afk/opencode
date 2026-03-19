@@ -226,7 +226,7 @@ function ConnectionGate(props: ParentProps<{ disableHealthCheck?: boolean }>) {
       when={checkMode() === "blocking" ? !startupHealthCheck.loading : startupHealthCheck.state !== "pending"}
       fallback={
         <div class="h-dvh w-screen flex flex-col items-center justify-center bg-background-base">
-          <RemoteLogo class="w-16 h-20 opacity-50 animate-pulse" />
+          <RemoteLogo class="w-16 h-20 animate-pulse" />
         </div>
       }
     >
