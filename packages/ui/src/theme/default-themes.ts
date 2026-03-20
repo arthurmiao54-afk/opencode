@@ -36,6 +36,7 @@ import tokyonightThemeJson from "./themes/tokyonight.json"
 import vercelThemeJson from "./themes/vercel.json"
 import vesperThemeJson from "./themes/vesper.json"
 import zenburnThemeJson from "./themes/zenburn.json"
+import lightBlueThemeJson from "./themes/light-blue.json"
 
 export const oc2Theme = oc2ThemeJson as DesktopTheme
 export const amoledTheme = amoledThemeJson as DesktopTheme
@@ -74,6 +75,7 @@ export const tokyonightTheme = tokyonightThemeJson as DesktopTheme
 export const vercelTheme = vercelThemeJson as DesktopTheme
 export const vesperTheme = vesperThemeJson as DesktopTheme
 export const zenburnTheme = zenburnThemeJson as DesktopTheme
+export const lightBlueTheme = lightBlueThemeJson as DesktopTheme
 
 export const DEFAULT_THEMES: Record<string, DesktopTheme> = {
   "oc-2": oc2Theme,
@@ -113,4 +115,5 @@ export const DEFAULT_THEMES: Record<string, DesktopTheme> = {
   vercel: vercelTheme,
   vesper: vesperTheme,
   zenburn: zenburnTheme,
+  "light-blue": lightBlueTheme,
 }
