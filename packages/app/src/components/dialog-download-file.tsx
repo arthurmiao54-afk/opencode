@@ -156,13 +156,13 @@ export function DialogDownloadFile() {
                   size="small"
                   class="!p-1 !size-6"
                   disabled={isDownloading()}
-                  onClick={(e) => {
+                  onClick={(e: MouseEvent) => {
                     e.stopPropagation()
                     handleDownload(item)
                   }}
                 >
                   <Show when={isDownloading()} fallback={<Icon name="download" size="small" />}>
-                    <Icon name="spinner" size="small" class="animate-spin" />
+                    <Icon name="align-right" size="small" class="animate-spin" />
                   </Show>
                 </Button>
               </div>

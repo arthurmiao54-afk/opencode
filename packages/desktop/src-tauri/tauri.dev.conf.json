@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "CimiCode",
-  "identifier": "ai.opencode.desktop",
+  "identifier": "com.cimi.cimicode",
   "mainBinaryName": "CimiCode",
   "version": "../package.json",
   "build": {
@@ -24,23 +24,17 @@
     "macOSPrivateApi": true
   },
   "bundle": {
-    "createUpdaterArtifacts": true,
     "icon": [
-      "icons/prod/32x32.png",
-      "icons/prod/128x128.png",
-      "icons/prod/128x128@2x.png",
-      "icons/prod/icon.icns",
-      "icons/prod/icon.ico"
+      "icons/dev/32x32.png",
+      "icons/dev/128x128.png",
+      "icons/dev/128x128@2x.png",
+      "icons/dev/icon.icns",
+      "icons/dev/icon.ico"
     ],
     "active": true,
     "targets": ["deb", "rpm", "dmg", "nsis", "app"],
     "externalBin": ["sidecars/cimicode-cli"],
     "linux": {
-      "deb": {
-        "files": {
-          "/usr/share/metainfo/ai.opencode.opencode.metainfo.xml": "release/appstream.metainfo.xml"
-        }
-      },
       "rpm": {
         "compression": {
           "type": "none"
@@ -52,7 +46,9 @@
     },
     "windows": {
       "nsis": {
-        "installerIcon": "icons/prod/icon.ico"
+        "installerIcon": "icons/dev/icon.ico",
+        "headerImage": "assets/nsis-header.bmp",
+        "sidebarImage": "assets/nsis-sidebar.bmp"
       }
     }
   },
@@ -61,10 +57,6 @@
       "desktop": {
         "schemes": ["opencode"]
       }
-    },
-    "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEYwMDM5Nzg5OUMzOUExMDQKUldRRW9UbWNpWmNEOENYT01CV0lhOXR1UFhpaXJsK1Z3aU9lZnNtNzE0TDROWVMwVW9XQnFOelkK",
-      "endpoints": ["https://github.com/anomalyco/opencode/releases/latest/download/latest.json"]
     }
   }
 }

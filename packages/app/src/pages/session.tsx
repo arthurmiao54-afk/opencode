@@ -16,6 +16,7 @@ import {
 import { createMediaQuery } from "@solid-primitives/media"
 import { createResizeObserver } from "@solid-primitives/resize-observer"
 import { useLocal } from "@/context/local"
+import { useCommand } from "@/context/command"
 import { selectionFromLines, useFile, type FileSelection, type SelectedLineRange } from "@/context/file"
 import { createStore } from "solid-js/store"
 import { ResizeHandle } from "@opencode-ai/ui/resize-handle"
@@ -24,6 +25,8 @@ import { Tabs } from "@opencode-ai/ui/tabs"
 import { createAutoScroll } from "@opencode-ai/ui/hooks"
 import { previewSelectedLines } from "@opencode-ai/ui/pierre/selection-bridge"
 import { Button } from "@opencode-ai/ui/button"
+import { Icon } from "@opencode-ai/ui/icon"
+import { Tooltip, TooltipKeybind } from "@opencode-ai/ui/tooltip"
 import { showToast } from "@opencode-ai/ui/toast"
 import { base64Encode, checksum } from "@opencode-ai/util/encode"
 import { useNavigate, useSearchParams } from "@solidjs/router"
@@ -312,6 +315,7 @@ export default function Page() {
   const prompt = usePrompt()
   const comments = useComments()
   const terminal = useTerminal()
+  const command = useCommand()
   const [searchParams, setSearchParams] = useSearchParams<{ prompt?: string }>()
   const { params, sessionKey, tabs, view } = useSessionLayout()
 
@@ -1691,26 +1695,34 @@ export default function Page() {
           </Tabs>
         </Show>
 
-        {/* Left Side Panel - File System */}
-        <SessionSidePanel
-          activeDiff={tree.activeDiff}
-          focusReviewDiff={focusReviewDiff}
-          reviewSnap={ui.reviewSnap}
-          size={size}
-        />
-
         {/* Session panel - Chat */}
         <div
           classList={{
-            "@container relative shrink-0 flex flex-col min-h-0 h-full bg-background-stronger flex-1 md:flex-none": true,
+            "@container relative shrink-0 flex flex-col min-h-0 h-full bg-background-stronger flex-1 md:flex-none shadow-xl rounded-xl": true,
             "transition-[width] duration-[240ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[width] motion-reduce:transition-none":
               !size.active() && !ui.reviewSnap,
+            "m-2": isDesktop(),
           }}
           style={{
             width: sessionPanelWidth(),
           }}
         >
-          <div class="flex-1 min-h-0 overflow-hidden">
+          {/* 切换侧边栏按钮 - 悬浮在左上角 */}
+          <Show when={isDesktop()}>
+            <div class="absolute top-3 left-3 z-50">
+              <Button
+                variant="ghost"
+                class="group/sidebar-toggle titlebar-icon w-8 h-6 p-0 box-border bg-background-base/90 backdrop-blur-sm shadow-sm rounded-md hover:bg-background-base"
+                onClick={() => layout.sidebar.toggle()}
+                aria-label={language.t("command.sidebar.toggle")}
+                aria-expanded={layout.sidebar.opened()}
+              >
+                <Icon size="small" name={layout.sidebar.opened() ? "sidebar-active" : "sidebar"} />
+              </Button>
+            </div>
+          </Show>
+
+          <div class="flex-1 min-h-0 overflow-hidden rounded-xl">
             <Switch>
               <Match when={params.id}>
                 <Show when={lastUserMessage()}>
@@ -1812,6 +1824,14 @@ export default function Page() {
             }}
           />
         </div>
+
+        {/* Right Side Panel - File System */}
+        <SessionSidePanel
+          activeDiff={tree.activeDiff}
+          focusReviewDiff={focusReviewDiff}
+          reviewSnap={ui.reviewSnap}
+          size={size}
+        />
 
         {/* Right Side Panel - Review */}
         <ReviewPanel

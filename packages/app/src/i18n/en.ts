@@ -959,6 +959,4 @@ export const dict = {
   "webFileTransfer.download.download": "Download",
   "webFileTransfer.download.success": "File downloaded successfully",
   "webFileTransfer.download.error": "Download failed",
-
-  "common.loading": "Loading...",
 }

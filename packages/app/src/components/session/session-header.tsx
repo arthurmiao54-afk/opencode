@@ -270,31 +270,11 @@ export function SessionHeader() {
       <Show when={leftMount()}>
         {(mount) => (
           <Portal mount={mount()}>
-            <Button
-              type="button"
-              variant="ghost"
-              size="small"
-              class="hidden md:flex w-[240px] max-w-full min-w-0 pl-0.5 pr-2 items-center gap-2 justify-between rounded-md border border-border-weak-base bg-surface-panel shadow-none cursor-default"
-              onClick={() => command.trigger("file.open")}
-              aria-label={language.t("session.header.searchFiles")}
-            >
-              <div class="flex min-w-0 flex-1 items-center gap-1.5 overflow-visible">
-                <Icon name="magnifying-glass" size="small" class="icon-base shrink-0 size-4" />
-                <span class="flex-1 min-w-0 text-12-regular text-text-weak truncate text-left">
-                  {language.t("session.header.search.placeholder", {
-                    project: name(),
-                  })}
-                </span>
-              </div>
-
-              <Show when={hotkey()}>
-                {(keybind) => (
-                  <Keybind class="shrink-0 !border-0 !bg-transparent !shadow-none px-0 text-text-weaker">
-                    {keybind()}
-                  </Keybind>
-                )}
-              </Show>
-            </Button>
+            <img
+              src="https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-logo.svg"
+              alt="CIMI Code Logo"
+              class="h-6 w-auto"
+            />
           </Portal>
         )}
       </Show>
@@ -302,7 +282,32 @@ export function SessionHeader() {
         {(mount) => (
           <Portal mount={mount()}>
             <div class="flex items-center gap-2">
-              <Show when={projectDirectory()}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="small"
+                class="hidden md:flex w-[240px] max-w-full min-w-0 pl-0.5 pr-2 items-center gap-2 justify-between rounded-md border border-border-weak-base bg-surface-panel shadow-none cursor-default"
+                onClick={() => command.trigger("file.open")}
+                aria-label={language.t("session.header.searchFiles")}
+              >
+                <div class="flex min-w-0 flex-1 items-center gap-1.5 overflow-visible">
+                  <Icon name="magnifying-glass" size="small" class="icon-base shrink-0 size-4" />
+                  <span class="flex-1 min-w-0 text-12-regular text-text-weak truncate text-left">
+                    {language.t("session.header.search.placeholder", {
+                      project: name(),
+                    })}
+                  </span>
+                </div>
+
+                <Show when={hotkey()}>
+                  {(keybind) => (
+                    <Keybind class="shrink-0 !border-0 !bg-transparent !shadow-none px-0 text-text-weaker">
+                      {keybind()}
+                    </Keybind>
+                  )}
+                </Show>
+              </Button>
+              {/* <Show when={projectDirectory()}>
                 <div class="hidden xl:flex items-center">
                   <Show
                     when={canOpen()}
@@ -414,7 +419,7 @@ export function SessionHeader() {
                     </div>
                   </Show>
                 </div>
-              </Show>
+              </Show> */}
               <div class="flex items-center gap-1">
                 <Tooltip placement="bottom" value={language.t("status.popover.trigger")}>
                   <StatusPopover />

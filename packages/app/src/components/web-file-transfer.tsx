@@ -52,26 +52,26 @@ export function WebFileTransfer() {
           <div class="flex items-center gap-1 shrink-0">
             <Tooltip
               placement="bottom"
-              value={language.t("webFileTransfer.upload.tooltip", {}, "Upload files to workspace")}
+              value={language.t("webFileTransfer.upload.tooltip")}
             >
               <Button
                 variant="ghost"
                 class="titlebar-icon w-8 h-6 p-0 box-border shrink-0"
                 onClick={handleUpload}
-                aria-label={language.t("webFileTransfer.upload.tooltip", {}, "Upload files to workspace")}
+                aria-label={language.t("webFileTransfer.upload.tooltip")}
               >
                 <Icon size="small" name="cloud-upload" />
               </Button>
             </Tooltip>
             <Tooltip
               placement="bottom"
-              value={language.t("webFileTransfer.download.tooltip", {}, "Download files from workspace")}
+              value={language.t("webFileTransfer.download.tooltip")}
             >
               <Button
                 variant="ghost"
                 class="titlebar-icon w-8 h-6 p-0 box-border shrink-0"
                 onClick={handleDownload}
-                aria-label={language.t("webFileTransfer.download.tooltip", {}, "Download files from workspace")}
+                aria-label={language.t("webFileTransfer.download.tooltip")}
               >
                 <Icon size="small" name="download" />
               </Button>

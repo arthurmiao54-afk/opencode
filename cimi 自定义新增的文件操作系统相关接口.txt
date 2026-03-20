@@ -1,0 +1,57 @@
+cimi  自定义新增的文件操作系统相关接口
+
+1：上传文件
+接口：post /file-manager/upload
+请求类型: 'multipart/form-data'
+参数：
+file： 类型File 必填：是
+path：类型String 必填：否 不传则默认放到/workspace下
+
+请求示例 post http://localhost:4096/file-manager/upload
+
+响应：
+成功 {success: true}
+
+2：查询下载列表
+接口：get /file-manager/list
+参数：path， 不填默认为/workspace下
+
+请求示例 post http://localhost:4096/file-manager/list?path=uploads
+
+响应：
+成功：
+{
+    success: true,
+    path: 'uploads',
+    items: [
+        {
+            name: 'folder1',
+            type: 'directory',
+            size: 0,
+            modifiedTime: '2026-03-18T10:00:00.000Z',
+            path: 'uploads/folder1'
+        }
+    ]
+}
+
+3：下载文件
+接口：get /file-manager/download
+
+参数：
+path：类型String 必填：是
+
+请求示例 post http://localhost:4096/file-manager/list?path=uploads/file.txt
+
+响应：
+成功 二进制文件流
+
+4：创建文件夹
+接口：post /file-manager/mkdir
+请求类型: 'application/json'
+参数：
+path：类型String 必填：是
+
+请求示例 post http://localhost:4096/file-manager/mkdir
+
+响应：
+成功 {success: true}

@@ -190,19 +190,19 @@ export function DialogUploadFile() {
                         variant="ghost"
                         size="small"
                         class="!size-6 !p-0"
-                        onClick={(e) => {
+                        onClick={(e: MouseEvent) => {
                           e.stopPropagation()
                           uploadFile(item)
                         }}
                       >
-                        <Icon name="play" size="small" />
+                        <Icon name="arrow-up" size="small" />
                       </Button>
                     </Show>
                     <Button
                       variant="ghost"
                       size="small"
                       class="!size-6 !p-0"
-                      onClick={(e) => {
+                      onClick={(e: MouseEvent) => {
                         e.stopPropagation()
                         removeFile(item.id)
                       }}

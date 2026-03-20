@@ -2322,14 +2322,14 @@ export default function Layout(props: ParentProps) {
           aria-label={language.t("sidebar.settings")}
         />
       </TooltipKeybind>
-      <Tooltip placement="bottom" value={language.t("sidebar.help")}>
+      {/* <Tooltip placement="bottom" value={language.t("sidebar.help")}>
         <IconButton
           icon="help"
           variant="ghost"
           onClick={() => platform.openLink("https://opencode.ai/desktop-feedback")}
           aria-label={language.t("sidebar.help")}
         />
-      </Tooltip>
+      </Tooltip> */}
     </div>
   )
 
