@@ -946,6 +946,7 @@ export const dict = {
   "webFileTransfer.upload.targetPath": "Target Path",
   "webFileTransfer.upload.dropzone": "Drop files here or click to browse",
   "webFileTransfer.upload.selectFiles": "Select Files",
+  "webFileTransfer.upload.selectFolder": "Select Folder",
   "webFileTransfer.upload.clearCompleted": "Clear Completed",
   "webFileTransfer.upload.uploadAll": "Upload All",
   "webFileTransfer.upload.success": "File uploaded successfully",

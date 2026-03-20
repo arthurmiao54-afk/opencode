@@ -2,7 +2,6 @@
  * Web File Transfer API
  *
  * This module provides file upload and download functionality for the web version.
- * The actual server endpoints need to be implemented on the backend.
  */
 
 export interface FileInfo {
@@ -10,7 +9,7 @@ export interface FileInfo {
   path: string
   type: "file" | "directory"
   size?: number
-  modified?: number
+  modifiedTime?: string
   children?: FileInfo[]
 }
 
@@ -28,110 +27,190 @@ export interface DownloadResult {
 }
 
 /**
+ * Get the base URL for the file manager API
+ */
+function getBaseURL(): string {
+  // Use relative path for same-origin requests
+  return ""
+}
+
+/**
  * File Transfer API client
- * TODO: Implement actual server endpoints
  */
 export const webFileTransferApi = {
   /**
    * List files in a directory
-   * @param directory - The directory path to list
-   * @param path - The relative path within the directory
+   * GET /file-manager/list?path=<path>
+   * @param path - The path to list (default: /workspace)
    */
-  async listFiles(directory: string, path: string = ""): Promise<FileInfo[]> {
-    // TODO: Implement actual API call
-    // Example:
-    // const response = await fetch(`/api/workspace/files?directory=${encodeURIComponent(directory)}&path=${encodeURIComponent(path)}`)
-    // if (!response.ok) throw new Error('Failed to list files')
-    // return response.json()
+  async listFiles(path: string = ""): Promise<FileInfo[]> {
+    try {
+      const url = new URL("/file-manager/list", getBaseURL())
+      if (path) {
+        url.searchParams.set("path", path)
+      }
 
-    console.log("[WebFileTransfer] listFiles called - API not implemented", { directory, path })
-    return []
+      const response = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to list files: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      return data.items || []
+    } catch (error) {
+      console.error("[WebFileTransfer] listFiles error:", error)
+      throw error
+    }
   },
 
   /**
    * Upload a file to the workspace
+   * POST /file-manager/upload
    * @param file - The file to upload
-   * @param targetPath - The target path in the workspace
+   * @param path - The target path (optional, default: /workspace)
    * @param onProgress - Progress callback
    */
   async uploadFile(
     file: File,
-    targetPath: string,
+    path: string = "",
     onProgress?: (progress: number) => void,
   ): Promise<UploadResult> {
-    // TODO: Implement actual API call
-    // Example:
-    // const formData = new FormData()
-    // formData.append('file', file)
-    // formData.append('path', targetPath)
-    //
-    // const xhr = new XMLHttpRequest()
-    // return new Promise((resolve, reject) => {
-    //   xhr.upload.onprogress = (e) => {
-    //     if (e.lengthComputable && onProgress) {
-    //       onProgress(e.loaded / e.total * 100)
-    //     }
-    //   }
-    //   xhr.onload = () => {
-    //     if (xhr.status === 200) {
-    //       resolve(JSON.parse(xhr.responseText))
-    //     } else {
-    //       reject(new Error('Upload failed'))
-    //     }
-    //   }
-    //   xhr.onerror = () => reject(new Error('Upload failed'))
-    //   xhr.open('POST', '/api/workspace/upload')
-    //   xhr.send(formData)
-    // })
+    return new Promise((resolve, reject) => {
+      const formData = new FormData()
+      formData.append("file", file)
+      if (path) {
+        formData.append("path", path)
+      }
 
-    console.log("[WebFileTransfer] uploadFile called - API not implemented", { file: file.name, targetPath })
-    if (onProgress) {
-      // Simulate progress for demo
-      onProgress(100)
-    }
-    return {
-      success: false,
-      message: "Upload API not implemented. Please implement the server endpoint.",
-    }
+      const xhr = new XMLHttpRequest()
+
+      // Track upload progress
+      xhr.upload.addEventListener("progress", (e) => {
+        if (e.lengthComputable && onProgress) {
+          const progress = Math.round((e.loaded / e.total) * 100)
+          onProgress(progress)
+        }
+      })
+
+      xhr.addEventListener("load", () => {
+        if (xhr.status === 200) {
+          try {
+            const response = JSON.parse(xhr.responseText)
+            resolve(response)
+          } catch (error) {
+            reject(new Error("Invalid response from server"))
+          }
+        } else {
+          reject(new Error(`Upload failed: ${xhr.statusText}`))
+        }
+      })
+
+      xhr.addEventListener("error", () => {
+        reject(new Error("Network error during upload"))
+      })
+
+      xhr.addEventListener("abort", () => {
+        reject(new Error("Upload was aborted"))
+      })
+
+      xhr.open("POST", `${getBaseURL()}/file-manager/upload`)
+      xhr.send(formData)
+    })
   },
 
   /**
    * Download a file from the workspace
+   * GET /file-manager/download?path=<path>
    * @param filePath - The path of the file to download
    */
   async downloadFile(filePath: string): Promise<DownloadResult> {
-    // TODO: Implement actual API call
-    // Example:
-    // const response = await fetch(`/api/workspace/download?path=${encodeURIComponent(filePath)}`)
-    // if (!response.ok) throw new Error('Failed to download file')
-    // const blob = await response.blob()
-    // const contentDisposition = response.headers.get('Content-Disposition')
-    // const filename = contentDisposition?.match(/filename="(.+)"/)?.[1] || getFilename(filePath)
-    // return { success: true, data: blob, filename }
+    try {
+      const url = new URL("/file-manager/download", getBaseURL())
+      url.searchParams.set("path", filePath)
 
-    console.log("[WebFileTransfer] downloadFile called - API not implemented", { filePath })
-    return {
-      success: false,
-      message: "Download API not implemented. Please implement the server endpoint.",
+      const response = await fetch(url.toString(), {
+        method: "GET",
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to download file: ${response.statusText}`)
+      }
+
+      // Get filename from Content-Disposition header if available
+      const contentDisposition = response.headers.get("Content-Disposition")
+      let filename = filePath.split("/").pop() || "download"
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)
+        if (filenameMatch && filenameMatch[1]) {
+          filename = filenameMatch[1].replace(/['"]/g, "")
+        }
+      }
+
+      const blob = await response.blob()
+
+      return {
+        success: true,
+        data: blob,
+        filename,
+      }
+    } catch (error) {
+      console.error("[WebFileTransfer] downloadFile error:", error)
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : "Download failed",
+      }
+    }
+  },
+
+  /**
+   * Create a directory
+   * POST /file-manager/mkdir
+   * @param path - The directory path to create
+   */
+  async createDirectory(path: string): Promise<{ success: boolean; message?: string }> {
+    try {
+      const response = await fetch(`${getBaseURL()}/file-manager/mkdir`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ path }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to create directory: ${response.statusText}`)
+      }
+
+      const result = await response.json()
+      return result
+    } catch (error) {
+      console.error("[WebFileTransfer] createDirectory error:", error)
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : "Failed to create directory",
+      }
     }
   },
 
   /**
    * Download a directory as a zip file
-   * @param directoryPath - The path of the directory to download
+   * Note: This feature is not available in the current API specification.
+   * Users should download individual files instead.
+   * @param directoryPath - The path of the directory
    */
   async downloadDirectory(directoryPath: string): Promise<DownloadResult> {
-    // TODO: Implement actual API call
-    // Example:
-    // const response = await fetch(`/api/workspace/download-directory?path=${encodeURIComponent(directoryPath)}`)
-    // if (!response.ok) throw new Error('Failed to download directory')
-    // const blob = await response.blob()
-    // return { success: true, data: blob, filename: `${getFilename(directoryPath)}.zip` }
-
-    console.log("[WebFileTransfer] downloadDirectory called - API not implemented", { directoryPath })
+    // Note: The current API specification does not include directory download
+    // This would require server-side zip creation functionality
+    console.warn("[WebFileTransfer] downloadDirectory is not supported by the current API")
     return {
       success: false,
-      message: "Download API not implemented. Please implement the server endpoint.",
+      message: "Directory download is not supported. Please download individual files.",
     }
   },
 }
