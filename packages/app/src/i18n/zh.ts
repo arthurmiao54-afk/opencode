@@ -945,6 +945,4 @@ export const dict = {
   "webFileTransfer.download.download": "下载",
   "webFileTransfer.download.success": "文件下载成功",
   "webFileTransfer.download.error": "下载失败",
-
-  "common.loading": "加载中...",
 } satisfies Partial<Record<Keys, string>>

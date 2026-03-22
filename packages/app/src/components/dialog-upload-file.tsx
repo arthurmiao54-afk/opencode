@@ -190,7 +190,7 @@ export function DialogUploadFile() {
                         variant="ghost"
                         size="small"
                         class="!size-6 !p-0"
-                        onClick={(e) => {
+                        onClick={(e: MouseEvent) => {
                           e.stopPropagation()
                           uploadFile(item)
                         }}
@@ -202,7 +202,7 @@ export function DialogUploadFile() {
                       variant="ghost"
                       size="small"
                       class="!size-6 !p-0"
-                      onClick={(e) => {
+                      onClick={(e: MouseEvent) => {
                         e.stopPropagation()
                         removeFile(item.id)
                       }}

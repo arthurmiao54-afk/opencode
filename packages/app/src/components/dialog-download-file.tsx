@@ -156,7 +156,7 @@ export function DialogDownloadFile() {
                   size="small"
                   class="!p-1 !size-6"
                   disabled={isDownloading()}
-                  onClick={(e) => {
+                  onClick={(e: MouseEvent) => {
                     e.stopPropagation()
                     handleDownload(item)
                   }}
