@@ -57,10 +57,13 @@ export interface ListRef {
 export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) {
   const i18n = useI18n()
   let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined
+  let initialFilterHandled = false
+
+  const searchProps = () => (typeof props.search === "object" ? props.search : {})
   const [store, setStore] = createStore({
     mouseActive: false,
     scrollRef: undefined as HTMLDivElement | undefined,
-    internalFilter: "",
+    internalFilter: props.filter ?? "",
   })
   const scrollRef = () => store.scrollRef
   const setScrollRef = (el: HTMLDivElement | undefined) => setStore("scrollRef", el)
@@ -88,7 +91,6 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
 
   const { filter, grouped, flat, active, setActive, onKeyDown, onInput, refetch } = useFilteredList<T>(props)
 
-  const searchProps = () => (typeof props.search === "object" ? props.search : {})
   const searchAction = () => searchProps().action
   const addProps = () => props.add
   const showAdd = () => !!addProps()
@@ -114,6 +116,12 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
 
   createEffect(() => {
     if (props.filter === undefined) return
+    if (!initialFilterHandled) {
+      initialFilterHandled = true
+      setInternalFilter(props.filter)
+      onInput(props.filter)
+      return
+    }
     if (props.filter === internalFilter()) return
     setInternalFilter(props.filter)
     onInput(props.filter)

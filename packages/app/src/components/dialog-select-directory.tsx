@@ -252,8 +252,16 @@ export function DialogSelectDirectory(props: DialogSelectDirectoryProps) {
   const dialog = useDialog()
   const language = useLanguage()
 
-  const [filter, setFilter] = createSignal("")
+  const [filter, setFilter] = createSignal("/workspace")
   let list: ListRef | undefined
+
+  const ensurePrefix = (value: string) => {
+    const cleaned = cleanInput(value)
+    if (cleaned === "" || cleaned === "/") return "/workspace"
+    if (cleaned.startsWith("/workspace")) return cleaned
+    if (cleaned.startsWith("/workspace/")) return cleaned
+    return "/workspace"
+  }
 
   const missingBase = createMemo(() => !(sync.data.path.home || sync.data.path.directory))
   const [fallbackPath] = createResource(
@@ -324,7 +332,11 @@ export function DialogSelectDirectory(props: DialogSelectDirectoryProps) {
   return (
     <Dialog title={props.title ?? language.t("command.project.open")}>
       <List
-        search={{ placeholder: language.t("dialog.directory.search.placeholder"), autofocus: true }}
+        filter={filter()}
+        search={{
+          placeholder: language.t("dialog.directory.search.placeholder"),
+          autofocus: true,
+        }}
         emptyMessage={language.t("dialog.directory.empty")}
         loadingMessage={language.t("common.loading")}
         items={items}
@@ -339,7 +351,7 @@ export function DialogSelectDirectory(props: DialogSelectDirectoryProps) {
           group.category === "recent" ? language.t("home.recentProjects") : language.t("command.project.open")
         }
         ref={(r) => (list = r)}
-        onFilter={(value) => setFilter(cleanInput(value))}
+        onFilter={(value) => setFilter(ensurePrefix(value))}
         onKeyEvent={(e, item) => {
           if (e.key !== "Tab") return
           if (e.shiftKey) return
@@ -349,7 +361,9 @@ export function DialogSelectDirectory(props: DialogSelectDirectoryProps) {
           e.stopPropagation()
 
           const value = displayPath(item.absolute, filter(), home())
-          list?.setFilter(value.endsWith("/") ? value : value + "/")
+          const withSlash = value.endsWith("/") ? value : value + "/"
+          setFilter(ensurePrefix(withSlash))
+          list?.setFilter(ensurePrefix(withSlash))
         }}
         onSelect={(path) => {
           if (!path) return

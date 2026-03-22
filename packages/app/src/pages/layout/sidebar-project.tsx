@@ -102,10 +102,10 @@ const ProjectTile = (props: {
         data-project={base64Encode(props.project.worktree)}
         classList={{
           "flex items-center justify-center size-10 p-1 rounded-lg overflow-hidden transition-colors cursor-default": true,
-          "bg-transparent border-2 border-icon-strong-base hover:bg-surface-base-hover": props.selected(),
-          "bg-transparent border border-transparent hover:bg-surface-base-hover hover:border-border-weak-base":
+          "bg-blue-50 border-2 border-blue-500 hover:bg-surface-base-hover": props.selected(),
+          "bg-gray-100 border border-transparent hover:bg-surface-base-hover hover:border-border-weak-base":
             !props.selected() && !props.active(),
-          "bg-surface-base-hover border border-border-weak-base": !props.selected() && props.active(),
+          "bg-gray-100 border border-transparent hover:bg-surface-base-hover hover:border-border-weak-base": !props.selected() && props.active(),
         }}
         onPointerDown={(event) => {
           if (!props.overlay()) return

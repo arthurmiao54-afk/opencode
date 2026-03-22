@@ -104,7 +104,7 @@ export default function Home() {
   return (
     <div class="mx-auto mt-55 w-full md:w-auto px-4">
       <RemoteLogo class="md:w-2xl" />
-      <Button
+      {/* <Button
         size="large"
         variant="ghost"
         class="mt-4 mx-auto text-14-regular text-text-weak"
@@ -117,7 +117,7 @@ export default function Home() {
           }}
         />
         {server.name}
-      </Button>
+      </Button> */}
       <Switch>
         <Match when={sync.data.project.length > 0}>
           <div class="mt-20 w-full flex flex-col gap-4">
