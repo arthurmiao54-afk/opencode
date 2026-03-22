@@ -2214,12 +2214,13 @@ export default function Layout(props: ParentProps) {
           <div class="rounded-xl bg-background-base shadow-xs-border-base" data-component="getting-started">
             <div class="p-3 flex flex-col gap-6">
               <div class="flex flex-col gap-2">
-                <div class="text-14-medium text-text-strong">{language.t("sidebar.gettingStarted.title")}</div>
+                {/* <div class="text-14-medium text-text-strong">{language.t("sidebar.gettingStarted.title")}</div>
                 <div class="text-14-regular text-text-base" style={{ "line-height": "var(--line-height-normal)" }}>
                   {language.t("sidebar.gettingStarted.line1")}
-                </div>
+                </div> */}
                 <div class="text-14-regular text-text-base" style={{ "line-height": "var(--line-height-normal)" }}>
-                  {language.t("sidebar.gettingStarted.line2")}
+                  {/* {language.t("sidebar.gettingStarted.line2")} */}
+                  {'请配置模型供应商'}
                 </div>
               </div>
               <div data-component="getting-started-actions">
@@ -2322,14 +2323,14 @@ export default function Layout(props: ParentProps) {
           aria-label={language.t("sidebar.settings")}
         />
       </TooltipKeybind>
-      <Tooltip placement="bottom" value={language.t("sidebar.help")}>
+      {/* <Tooltip placement="bottom" value={language.t("sidebar.help")}>
         <IconButton
           icon="help"
           variant="ghost"
           onClick={() => platform.openLink("https://opencode.ai/desktop-feedback")}
           aria-label={language.t("sidebar.help")}
         />
-      </Tooltip>
+      </Tooltip> */}
     </div>
   )
 

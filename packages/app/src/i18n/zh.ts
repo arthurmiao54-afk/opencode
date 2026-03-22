@@ -932,6 +932,7 @@ export const dict = {
   "webFileTransfer.upload.targetPath": "目标路径",
   "webFileTransfer.upload.dropzone": "拖放文件到此处或点击选择",
   "webFileTransfer.upload.selectFiles": "选择文件",
+  "webFileTransfer.upload.selectFolder": "选择文件夹",
   "webFileTransfer.upload.clearCompleted": "清除已完成",
   "webFileTransfer.upload.uploadAll": "全部上传",
   "webFileTransfer.upload.success": "文件上传成功",

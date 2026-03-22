@@ -207,7 +207,7 @@ export function Titlebar() {
           >
             <Button
               variant="ghost"
-              class="group/sidebar-toggle titlebar-icon w-8 h-6 p-0 box-border"
+              class="group/sidebar-toggle titlebar-icon w-8 h-6 p-0 box-border hidden"
               onClick={layout.sidebar.toggle}
               aria-label={language.t("command.sidebar.toggle")}
               aria-expanded={layout.sidebar.opened()}
@@ -215,7 +215,7 @@ export function Titlebar() {
               <Icon size="small" name={layout.sidebar.opened() ? "sidebar-active" : "sidebar"} />
             </Button>
           </TooltipKeybind>
-          <div class="hidden xl:flex items-center shrink-0">
+          {/* <div class="hidden xl:flex items-center shrink-0">
             <Show when={params.dir}>
               <div
                 class="flex items-center shrink-0 w-8 mr-1"
@@ -281,7 +281,7 @@ export function Titlebar() {
                 />
               </Tooltip>
             </div>
-          </div>
+          </div> */}
         </div>
         <div id="opencode-titlebar-left" class="flex items-center gap-3 min-w-0 px-2" />
       </div>

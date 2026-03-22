@@ -10,6 +10,7 @@ import { useLayout } from "@/context/layout"
 import { useSync } from "@/context/sync"
 import type { Sizing } from "@/pages/session/helpers"
 import { useSessionLayout } from "@/pages/session/session-layout"
+import { createOpenSessionFileTab } from "@/pages/session/helpers"
 
 export function SessionSidePanel(props: {
   activeDiff?: string
@@ -21,7 +22,7 @@ export function SessionSidePanel(props: {
   const sync = useSync()
   const file = useFile()
   const language = useLanguage()
-  const { params } = useSessionLayout()
+  const { params, tabs, view } = useSessionLayout()
 
   const isDesktop = createMediaQuery("(min-width: 768px)")
 
@@ -100,6 +101,27 @@ export function SessionSidePanel(props: {
 
   const treeWidth = createMemo(() => (fileOpen() ? `${layout.fileTree.width()}px` : "0px"))
 
+  const openReviewPanel = () => {
+    if (!view().reviewPanel.opened()) view().reviewPanel.open()
+  }
+
+  const openFileTab = createOpenSessionFileTab({
+    normalizeTab: (tab: string) => {
+      if (!tab.startsWith("file://")) return tab
+      return file.tab(tab)
+    },
+    openTab: tabs().open,
+    pathFromTab: file.pathFromTab,
+    loadFile: file.load,
+    openReviewPanel,
+    setActive: tabs().setActive,
+  })
+
+  const handleFileClick = (node: { path: string }) => {
+    const fileTab = file.tab(node.path)
+    openFileTab(fileTab)
+  }
+
   return (
     <Show when={isDesktop()}>
       <aside
@@ -115,7 +137,7 @@ export function SessionSidePanel(props: {
         }}
         style={{ width: treeWidth() }}
       >
-        <div class="size-full flex border-r border-border-weaker-base">
+        <div class="size-full flex border-l border-border-weaker-base">
           <div class="h-full w-full flex flex-col overflow-hidden group/filetree" data-scope="filetree">
             <Tabs
               variant="pill"
@@ -171,7 +193,7 @@ export function SessionSidePanel(props: {
                       class="pt-3"
                       modified={diffFiles()}
                       kinds={kinds()}
-                      onFileClick={(node) => file.load(node.path)}
+                      onFileClick={handleFileClick}
                     />
                   </Match>
                 </Switch>

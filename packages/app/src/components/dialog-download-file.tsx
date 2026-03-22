@@ -162,7 +162,7 @@ export function DialogDownloadFile() {
                   }}
                 >
                   <Show when={isDownloading()} fallback={<Icon name="download" size="small" />}>
-                    <Icon name="spinner" size="small" class="animate-spin" />
+                    <Icon name="align-right" size="small" class="animate-spin" />
                   </Show>
                 </Button>
               </div>
